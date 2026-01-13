@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Recicle Recife - Portal de conscientização e localização de pontos de coleta de lixo eletrônico na cidade do Recife">
+  <meta name="keywords" content="reciclagem, lixo eletrônico, e-waste, Recife, sustentabilidade, coleta seletiva">
+  <meta name="author" content="Artur Leone">
+  
+  <title>Recicle Recife | Coleta de Resíduos Eletrônicos</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♻️</text></svg>">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="logo">
+        <div class="logo-icon">♻️</div>
+        <span class="logo-text">Recicle Recife</span>
+      </div>
+      
+      <nav class="nav">
+        <button class="nav-btn active" data-target="section-inicial">Início</button>
+        <button class="nav-btn" data-target="section-mapa">Mapa</button>
+        <button class="nav-btn" data-target="section-consciencia">Conscientização</button>
+        <button class="nav-btn" data-target="section-contato">Contato</button>
+      </nav>
+      
+      <button class="mobile-menu-btn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main">
+    <!-- ==================== SEÇÃO INICIAL ==================== -->
+    <section id="section-inicial" class="section active">
+      <!-- Hero -->
+      <div class="hero">
+        <div class="hero-content">
+          <div class="hero-text">
+            <div class="hero-badge">Tecnologia para Inclusão Digital</div>
+            <h1>Descarte seu <span>lixo eletrônico</span> de forma consciente</h1>
+            <p class="hero-description">
+              Encontre os pontos de coleta mais próximos de você e contribua para um Recife mais sustentável. 
+              Juntos, podemos transformar resíduos em recursos.
+            </p>
+            <div class="hero-buttons">
+              <button class="btn btn-primary" data-nav-to="mapa">
+                📍 Ver Pontos de Coleta
+              </button>
+              <button class="btn btn-secondary" data-nav-to="consciencia">
+                📚 Saiba Mais
+              </button>
+            </div>
+          </div>
+          
+          <div class="hero-visual">
+            <div class="hero-map-container">
+              <div class="hero-map-header">
+                <h3>📍 Pontos de Coleta</h3>
+                <span class="points-count" id="hero-points-count">10 locais</span>
+              </div>
+              <div id="map-hero"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estatísticas -->
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-icon">📍</div>
+          <div class="stat-number" id="stat-pontos">0</div>
+          <div class="stat-label">Pontos de Coleta</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🔌</div>
+          <div class="stat-number" id="stat-tipos">0</div>
+          <div class="stat-label">Tipos de Eletrônicos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🏘️</div>
+          <div class="stat-number" id="stat-bairros">0</div>
+          <div class="stat-label">Bairros Atendidos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🌱</div>
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Gratuito</div>
+        </div>
+      </div>
+
+      <!-- Info Section -->
+      <div class="info-section">
+        <div class="section-header">
+          <h2>Como funciona o <span class="text-gradient">Recicle Recife</span>?</h2>
+          <p>Um portal desenvolvido para facilitar o descarte consciente de resíduos eletrônicos na cidade do Recife.</p>
+        </div>
+        
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-card-icon">🗺️</div>
+            <h3>Encontre Pontos</h3>
+            <p>Localize os pontos de coleta mais próximos de você através do nosso mapa interativo com informações atualizadas.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-icon">📱</div>
+            <h3>Descarte Seguro</h3>
+            <p>Leve seus equipamentos eletrônicos antigos para os pontos de coleta e garanta o descarte ambientalmente correto.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-icon">🌍</div>
+            <h3>Ajude o Planeta</h3>
+            <p>Ao reciclar, você evita a contaminação do solo e água, além de contribuir para a economia circular.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SEÇÃO MAPA ==================== -->
+    <section id="section-mapa" class="section">
+      <div class="map-section">
+        <div class="section-header">
+          <h2>Pontos de Coleta em <span class="text-gradient">Recife</span></h2>
+          <p>Encontre o ponto de coleta mais próximo de você. Clique nos marcadores para mais informações.</p>
+        </div>
+        
+        <div class="map-container">
+          <div class="map-wrapper">
+            <div id="map-full"></div>
+            <div class="map-sidebar">
+              <h3>📋 Lista de Pontos</h3>
+              <div class="points-list" id="points-list">
+                <!-- Pontos serão renderizados via JavaScript -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SEÇÃO CONSCIENTIZAÇÃO ==================== -->
+    <section id="section-consciencia" class="section">
+      <div class="consciousness-hero">
+        <h1>Por que reciclar <span class="text-gradient">eletrônicos</span>?</h1>
+        <p>
+          O lixo eletrônico (e-waste) é um dos maiores desafios ambientais do século XXI. 
+          Entenda por que o descarte correto é tão importante.
+        </p>
+      </div>
+
+      <!-- Cards de Impacto -->
+      <div class="impact-cards">
+        <div class="impact-card">
+          <div class="impact-card-image">🌊</div>
+          <div class="impact-card-content">
+            <h3>Proteção das Águas</h3>
+            <p>Metais pesados como mercúrio, chumbo e cádmio presentes em eletrônicos podem contaminar lençóis freáticos e rios.</p>
+          </div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-card-image">🌱</div>
+          <div class="impact-card-content">
+            <h3>Preservação do Solo</h3>
+            <p>O descarte incorreto polui o solo por décadas, afetando a agricultura e a biodiversidade local.</p>
+          </div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-card-image">♻️</div>
+          <div class="impact-card-content">
+            <h3>Economia Circular</h3>
+            <p>Materiais como ouro, prata, cobre e plásticos podem ser recuperados e reaproveitados na indústria.</p>
+          </div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-card-image">💼</div>
+          <div class="impact-card-content">
+            <h3>Geração de Empregos</h3>
+            <p>A cadeia de reciclagem de eletrônicos gera milhares de empregos verdes em todo o Brasil.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Passos para Descarte -->
+      <div class="steps-section">
+        <h2>Como descartar seus <span class="text-gradient">eletrônicos</span></h2>
+        
+        <div class="steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h3>Separe os Equipamentos</h3>
+              <p>Identifique todos os eletrônicos que não usa mais: celulares antigos, computadores, TVs, pilhas, baterias, cabos e carregadores.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h3>Remova Dados Pessoais</h3>
+              <p>Antes de descartar, faça backup e apague todos os dados pessoais de celulares, tablets e computadores.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h3>Localize um Ponto de Coleta</h3>
+              <p>Use nosso mapa para encontrar o ponto de coleta mais próximo da sua casa ou trabalho.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+              <h3>Entregue no Local</h3>
+              <p>Leve seus eletrônicos até o ponto de coleta. O serviço é gratuito e contribui para um futuro mais sustentável!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tipos de Eletrônicos -->
+      <div class="types-section">
+        <div class="section-header">
+          <h2>O que pode ser <span class="text-gradient">reciclado</span>?</h2>
+          <p>Conheça os principais tipos de resíduos eletrônicos aceitos nos pontos de coleta.</p>
+        </div>
+        
+        <div class="types-grid">
+          <div class="type-card">
+            <div class="type-icon">📱</div>
+            <h4>Celulares</h4>
+            <p>Smartphones e telefones antigos</p>
+          </div>
+          <div class="type-card">
+            <div class="type-icon">💻</div>
+            <h4>Computadores</h4>
+            <p>Desktops, notebooks e tablets</p>
+          </div>
+          <div class="type-card">
+            <div class="type-icon">🖥️</div>
+            <h4>Monitores</h4>
+            <p>Telas LCD, LED e CRT</p>
+          </div>
+          <div class="type-card">
+            <div class="type-icon">📺</div>
+            <h4>TVs</h4>
+            <p>Televisores de todos os tipos</p>
+          </div>
+          <div class="type-card">
+            <div class="type-icon">🔋</div>
+            <h4>Pilhas e Baterias</h4>
+            <p>Todos os tipos e tamanhos</p>
+          </div>
+          <div class="type-card">
+            <div class="type-icon">🖨️</div>
+            <h4>Impressoras</h4>
+            <p>Impressoras e cartuchos</p>
+          </div>
+          <div class="type-card">
+            <div class="type-icon">🎮</div>
+            <h4>Videogames</h4>
+            <p>Consoles e acessórios</p>
+          </div>
+          <div class="type-card">
+            <div class="type-icon">💡</div>
+            <h4>Lâmpadas</h4>
+            <p>Fluorescentes e LED</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SEÇÃO CONTATO ==================== -->
+    <section id="section-contato" class="section">
+      <div class="contact-section">
+        <div class="contact-wrapper">
+          <div class="contact-info">
+            <h1>Entre em <span class="text-gradient">Contato</span></h1>
+            <p>Tem dúvidas, sugestões ou quer saber mais sobre o projeto? Envie sua mensagem!</p>
+            
+            <div class="contact-details">
+              <div class="contact-item">
+                <div class="contact-item-icon">📧</div>
+                <div class="contact-item-text">
+                  <h4>E-mail</h4>
+                  <p>arturleonedev@gmail.com</p>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-item-icon">📞</div>
+                <div class="contact-item-text">
+                  <h4>Telefone</h4>
+                  <p>(81) 98690-0555</p>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-item-icon">📍</div>
+                <div class="contact-item-text">
+                  <h4>Localização</h4>
+                  <p>Recife - Pernambuco</p>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-item-icon">🕐</div>
+                <div class="contact-item-text">
+                  <h4>Atendimento</h4>
+                  <p>Segunda a Sexta, 8h às 18h</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="contact-form">
+            <h2>Envie sua Mensagem</h2>
+            <form id="contact-form">
+              <div class="form-group">
+                <label for="name">Nome Completo</label>
+                <input type="text" id="name" name="name" placeholder="Digite seu nome" required>
+              </div>
+              <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+              </div>
+              <div class="form-group">
+                <label for="subject">Assunto</label>
+                <select id="subject" name="subject" required>
+                  <option value="">Selecione um assunto</option>
+                  <option value="duvida">Dúvida sobre descarte</option>
+                  <option value="ponto">Sugerir novo ponto de coleta</option>
+                  <option value="parceria">Parceria / Empresa</option>
+                  <option value="outro">Outro assunto</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="message">Mensagem</label>
+                <textarea id="message" name="message" rows="5" placeholder="Digite sua mensagem..." required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary form-submit">
+                📤 Enviar Mensagem
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <div class="logo">
+          <div class="logo-icon">♻️</div>
+          <span class="logo-text">Recicle Recife</span>
+        </div>
+        <p>Projeto desenvolvido como Atividade Extensionista - Tecnologia Aplicada à Inclusão Digital. Contribuindo para um Recife mais sustentável.</p>
+      </div>
+      
+      <div class="footer-links">
+        <h4>Navegação</h4>
+        <ul>
+          <li><a href="#" onclick="document.querySelector('[data-target=section-inicial]').click()">Início</a></li>
+          <li><a href="#" onclick="document.querySelector('[data-target=section-mapa]').click()">Mapa</a></li>
+          <li><a href="#" onclick="document.querySelector('[data-target=section-consciencia]').click()">Conscientização</a></li>
+          <li><a href="#" onclick="document.querySelector('[data-target=section-contato]').click()">Contato</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-links">
+        <h4>Recursos</h4>
+        <ul>
+          <li><a href="#">Política de Privacidade</a></li>
+          <li><a href="#">Termos de Uso</a></li>
+          <li><a href="#">Acessibilidade</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-links">
+        <h4>Parceiros</h4>
+        <ul>
+          <li><a href="https://www.recife.pe.gov.br/" target="_blank">Prefeitura do Recife</a></li>
+          <li><a href="https://www.uninter.com/" target="_blank">UNINTER</a></li>
+          <li><a href="https://www.ibama.gov.br/" target="_blank">IBAMA</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; 2025 Recicle Recife. Desenvolvido por Artur Leone - UNINTER</p>
+      <p>Atividade Extensionista: Tecnologia Aplicada à Inclusão Digital</p>
+    </div>
+  </footer>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  
+  <!-- App JS -->
+  <script src="js/app.js"></script>
+</body>
+</html>
